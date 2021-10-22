@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     var kocka1 : Int = 0
     var kocka2 : Int = 0
+    var kockaDb : Int = 2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +34,20 @@ class MainActivity : AppCompatActivity() {
 
         kocka1Button.setOnClickListener(){
             kocka2Image.visibility = View.GONE
+            kockaDb = 1
         }
 
         kocka2Button.setOnClickListener(){
             kocka2Image.visibility = View.VISIBLE
+            kockaDb = 2
         }
 
         dobasButton.setOnClickListener(){
-            dobas1()
+            if (kockaDb == 1) {
+                dobas1()
+            } else {
+                dobas2()
+            }
         }
 
         resetButton.setOnClickListener(){
@@ -70,6 +77,15 @@ class MainActivity : AppCompatActivity() {
         kocka1 = random.nextInt(6) + 1
         kocka1Image.setImageResource(kockak[kocka1 - 1])
         eredmenyTextView.append("$kocka1\n")
+    }
+
+    fun dobas2() {
+        kocka1 = random.nextInt(6) + 1
+        kocka2 = random.nextInt(6) + 1
+        var osszes = kocka1 + kocka2
+        kocka1Image.setImageResource(kockak[kocka1 - 1])
+        kocka2Image.setImageResource(kockak[kocka2 - 1])
+        eredmenyTextView.append("$osszes ($kocka1+$kocka2)\n")
     }
 
     fun reset() {
