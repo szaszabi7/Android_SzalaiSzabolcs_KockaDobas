@@ -1,11 +1,13 @@
 package hu.petrik.kockadobas
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var resetButton : Button
     lateinit var eredmenyTextView : TextView
     lateinit var random : Random
+    lateinit var kockak : Array<Int>
 
     var kocka1 : Int = 0
     var kocka2 : Int = 0
@@ -27,6 +30,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init();
+
+        kocka1Button.setOnClickListener(){
+            kocka2Image.visibility = View.GONE
+        }
+
+        kocka2Button.setOnClickListener(){
+            kocka2Image.visibility = View.VISIBLE
+        }
+
+        dobasButton.setOnClickListener(){
+            dobas1()
+        }
+
+        resetButton.setOnClickListener(){
+            reset()
+        }
     }
 
     fun init() {
@@ -38,12 +57,33 @@ class MainActivity : AppCompatActivity() {
         resetButton = findViewById(R.id.resetButton)
         eredmenyTextView = findViewById(R.id.eredmenyTextView)
         random = Random
-        val kockak = arrayOf(
+        kockak = arrayOf(
             R.drawable.kocka1,
             R.drawable.kocka2,
             R.drawable.kocka3,
             R.drawable.kocka4,
             R.drawable.kocka5,
             R.drawable.kocka6)
+    }
+
+    fun dobas1() {
+        kocka1 = random.nextInt(6) + 1
+        kocka1Image.setImageResource(kockak[kocka1 - 1])
+        eredmenyTextView.append("$kocka1\n")
+    }
+
+    fun reset() {
+        var resetAlert = AlertDialog.Builder(this)
+            .setTitle("Reset")
+            .setCancelable(false)
+            .setMessage("Biztos, hogy törölni szeretné az eddigi dobásokat")
+            .setPositiveButton("Igen", DialogInterface.OnClickListener {dialog, id ->
+                eredmenyTextView.setText("")
+                kocka1Image.setImageResource(R.drawable.kocka1)
+                kocka2Image.setImageResource(R.drawable.kocka1)
+            })
+            .setNegativeButton("Nem", DialogInterface.OnClickListener { dialog, id ->
+
+            }).show()
     }
 }
